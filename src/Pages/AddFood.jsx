@@ -2,8 +2,11 @@ import { useState } from 'react';
 import useAuth from '../hook/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddFood = () => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         foodName: '',
         foodImage: '',
@@ -23,7 +26,7 @@ const AddFood = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const foodData = {
             ...formData,
@@ -34,18 +37,16 @@ const AddFood = () => {
         };
 
         console.log(foodData)
-        axios.post(`${import.meta.env.VITE_API_URL}/foods`, foodData)
-        .then((data) => {
-            console.log(data)
-            if(data.data.insertedId){
-
-                toast.success('Food added successfully!')
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/foods`, foodData);
+            if (data.insertedId) {
+                toast.success('Food added successfully!');
+                navigate('/availableFoods');
             }
-        })
-        .catch(error => {
-            toast.error(error.message)
-        })
-
+        } catch (error) {
+            toast.error(error.message); 
+            console.error("Error adding food:", error);
+        }
         setFormData({
             foodName: '',
             foodImage: '',

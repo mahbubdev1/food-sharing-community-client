@@ -5,13 +5,15 @@ import FoodCard from "./FoodCard";
 const AvailableFoods = () => {
     const [allFoods, setAllFoods] = useState([]);
     const [search, setSearch] = useState('');
-    // console.log(search)
+    const [sort, setSort] = useState('');
+    // console.log(sort)
 
     useEffect(() => {
         loadedAllFood()
-    }, [search])
+    }, [search, sort])
+
     const loadedAllFood = async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/foods?search=${search}`)
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/foods?search=${search}&sort=${sort}`)
         const availableFoods = data.filter((food) => food.foodStatus === "available")
         setAllFoods(availableFoods)
     }
@@ -19,11 +21,11 @@ const AvailableFoods = () => {
     console.log(allFoods)
     return (
         <div className="container mx-auto my-16">
-            <div className="flex items-center space-x-8 mb-4">
-                <h1 className="text-2xl font-bold mb-6">Available Foods: <span className="text-violet-600">{allFoods?.length}</span></h1>
-                <form  onSubmit={(e) => {
-                        e.preventDefault();
-                    }}>
+            <div className="flex items-center justify-between space-x-8 mb-8">
+                <h1 className="text-2xl font-bold">Available Foods: <span className="text-violet-600">{allFoods?.length}</span></h1>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                }}>
                     <div className='flex p-1 overflow-hidden border rounded-lg  focus-within:ring focus-within:ring-opacity-40 focus-within:border-violet-400 focus-within:ring-violet-300'>
                         <input
                             onChange={(e) => setSearch(e.target.value)}
@@ -40,6 +42,9 @@ const AvailableFoods = () => {
                         </button>
                     </div>
                 </form>
+                <div>
+                    <button onClick={() => setSort('dsc')} className="px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700">Sort By DSC</button>
+                </div>
             </div>
             <div className="grid grid-cols-3 gap-14">
                 {
