@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAuth from "../hook/useAuth";
 import { format } from "date-fns";
-import { Toaster } from "react-hot-toast";
 
 const FoodDetails = () => {
     const paramsId = useParams();
     const [foods, setFoods] = useState({});
     const { user } = useAuth();
 
-    console.log(paramsId.id)
+    console.log(foods)
     useEffect(() => {
         loadedAllFood()
     }, [])
@@ -20,105 +19,68 @@ const FoodDetails = () => {
     }
 
     const todayDate = format(new Date(), 'yyyy-MM-dd');
-
-    const { foodName, foodImage, _id, donatorEmail, donatorName, userEmail = user.email, pickupLocation, expiredDateTime, additionalNotes, foodQuantity } = foods;
-
+    
+    const { foodName, foodImage, _id, donatorEmail, donatorName, userEmail = user.email, pickupLocation, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
+    
+    // const expireDate = format(new Date(expiredDateTime), 'P')
 
     return (
-        <div className="bg-gray-100 flex items-center mb-28 justify-center py-16 min-h-screen">
-            <div className="bg-white p-8 rounded-lg shadow-md max-w-2xl">
-                <h1 className="text-2xl font-bold mb-6 text-center">Add Food</h1>
-                <form >
-                    <div className="grid grid-cols-2 gap-3">
-                        {/* Food Name Form */}
-                        <div className="mb-4">
-                            <label htmlFor="foodName" className="block text-sm font-medium text-gray-700">Food Name</label>
-                            <input
-                                type="text"
-                                id="foodName"
-                                name="foodName"
-                                // value={formData.foodName}
-                                // onChange={handleChange}
-                                className="mt-1 block w-full p-2 border rounded-md"
-                                required
-                            />
+        <section className="p-6 bg-gray-800 dark:bg-gray-100 text-gray-50 dark:text-gray-900 my-20">
+            <form noValidate="" action="" className="container flex flex-col mx-auto">
+                <h2 className="text-3xl font-bold text-center py-3">Requested Form</h2>
+                <fieldset className="grid grid-cols-3 gap-6 p-6 rounded-md shadow-sm bg-gray-900 dark:bg-gray-50">
+                    <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+                        <div className="col-span-full space-y-2 sm:col-span-3">
+                            <label htmlFor="foodName" className="font-bold pb-2">Food Name</label>
+                            <input id="foodName" type="text" value={foodName} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 p-3 focus:ring-gray-400 font-thin focus:dark:ring-gray-600 border-gray-900" />
                         </div>
-
-                        {/* Food Image Form*/}
-                        <div className="mb-4">
-                            <label htmlFor="foodImage" className="block text-sm font-medium text-gray-700">Food Image URL</label>
-                            <input
-                                type="url"
-                                id="foodImage"
-                                name="foodImage"
-                                // value={formData.foodImage}
-                                // onChange={handleChange}
-                                className="mt-1 block w-full p-2 border rounded-md"
-                                required
-                            />
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="foodImage" className="font-bold pb-2">Food Image</label>
+                            <input id="foodImage" type="text" value={foodImage} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
                         </div>
-
-                        {/* Food Quantity Form*/}
-                        <div className="mb-4">
-                            <label htmlFor="foodQuantity" className="block text-sm font-medium text-gray-700">Food Quantity</label>
-                            <input
-                                type="number"
-                                id="foodQuantity"
-                                name="foodQuantity"
-                                // value={formData.foodQuantity}
-                                // onChange={handleChange}
-                                className="mt-1 block w-full p-2 border rounded-md"
-                                required
-                            />
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="foodId" className="font-bold pb-2">Food Id</label>
+                            <input id="foodId" type="text" value={_id} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
                         </div>
-
-                        {/* Pickup Location Form*/}
-                        <div className="mb-4">
-                            <label htmlFor="pickupLocation" className="block text-sm font-medium text-gray-700">Pickup Location</label>
-                            <input
-                                type="text"
-                                id="pickupLocation"
-                                name="pickupLocation"
-                                value={pickupLocation}
-                                // onChange={handleChange}
-                                className="mt-1 block disabled:cursor-not-allowed w-full p-2 border rounded-md"
-                                required
-                            />
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="DonatorEmail" className="font-bold pb-2">Donator Email</label>
+                            <input id="DonatorEmail" type="text" value={donatorEmail} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
                         </div>
-
-                        {/* Expired Date/Time Form*/}
-                        <div className="mb-4">
-                            <label htmlFor="expiredDateTime" className="block text-sm font-medium text-gray-700">Expired Date/Time</label>
-                            <input
-                                type="datetime-local"
-                                id="expiredDateTime"
-                                name="expiredDateTime"
-                                value={expiredDateTime}
-                                // onChange={handleChange}
-                                className="mt-1 block w-full p-2 border rounded-md"
-                                required
-                            />
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="DonatorName" className="font-bold pb-2">Donator Name</label>
+                            <input id="DonatorName" type="text" value={donatorName} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
                         </div>
-
-                        {/* Additional Notes Form*/}
-                        <div className="mb-4">
-                            <label htmlFor="additionalNotes" className="block text-sm font-medium text-gray-700">Additional Notes</label>
-                            <textarea
-                                id="additionalNotes"
-                                name="additionalNotes"
-                                // value={formData.additionalNotes}
-                                // onChange={handleChange}
-                                className="mt-1 block w-full p-2 border rounded-md"
-                            ></textarea>
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="userEmail" className="font-bold pb-2">User Email</label>
+                            <input id="userEmail" type="text" value={userEmail} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
+                        </div>
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="newDate" className="font-bold pb-2">New Date</label>
+                            <input id="newDate" type="date" value={todayDate} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
+                        </div>
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="pickerLocation" className="font-bold pb-2">Picker Location</label>
+                            <input id="pickerLocation" type="text" value={pickupLocation} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
+                        </div>
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="expireDate" className="font-bold pb-2">Expire Date</label>
+                            <input id="expireDate" type="date" value={expiredDateTime} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
+                        </div>
+                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                            <label htmlFor="foodQuality" className="font-bold pb-2">Food Quality</label>
+                            <input id="foodQuality" type="text" value={foodQuantity} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
                         </div>
                     </div>
-
-                    {/* Add Button */}
-                    <input type="submit" className="bg-violet-500 text-white py-2 w-full rounded-xl" value="Add Food" />
-                    <Toaster></Toaster>
-                </form>
-            </div>
-        </div>
+                    <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                        <label htmlFor="additionalNotes" className="font-bold pb-2">Additional Notes</label>
+                        <input id="additionalNotes" type="text" defaultValue={additionalNotes} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
+                    </div>
+                    <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
+                        <input type="submit" className="w-full px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700" value="Requested" />
+                    </div>
+                </fieldset>
+            </form>
+        </section>
     );
 };
 
