@@ -16,7 +16,7 @@ const Navbar = () => {
                 <NavLink to="/availableFoods" rel="noopener noreferrer" className={({ isActive }) => `flex px-3 text-sm border-2 border-violet-400 rounded-xl py-2 -mb-1 ${isActive ? 'bg-violet-600 text-white' : 'text-violet-500'}`}>Available Foods</NavLink>
                 <NavLink to="/addFood" rel="noopener noreferrer" className={({ isActive }) => `flex px-3 text-sm border-2 border-violet-500 rounded-xl py-2 -mb-1 ${isActive ? 'bg-violet-600 text-white' : 'text-violet-500'}`}>Add Food</NavLink>
                 <NavLink to="/manageFood" rel="noopener noreferrer" className={({ isActive }) => `flex px-3 text-sm border-2 border-violet-500 rounded-xl py-2 -mb-1 ${isActive ? 'bg-violet-600 text-white' : 'text-violet-500'}`}>Manage My Foods</NavLink>
-                <NavLink to="/myFood" rel="noopener noreferrer" className={({ isActive }) => `flex px-3 text-sm border-2 border-violet-500 rounded-xl py-2 -mb-1 ${isActive ? 'bg-violet-600 text-white' : 'text-violet-500'}`}>My Food Request</NavLink>
+                <NavLink to="/myFoodRequest" rel="noopener noreferrer" className={({ isActive }) => `flex px-3 text-sm border-2 border-violet-500 rounded-xl py-2 -mb-1 ${isActive ? 'bg-violet-600 text-white' : 'text-violet-500'}`}>My Food Request</NavLink>
             </div>
         </>
     );

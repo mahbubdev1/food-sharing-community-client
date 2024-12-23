@@ -18,7 +18,7 @@ const UpdateFoods = () => {
         loadedAllFood()
     }, [paramsId?.id])
 
-    const { foodName, foodImage, pickupLocation,  expiredDateTime, additionalNotes, foodQuantity } = foods || {};
+    const { foodName, foodImage, pickupLocation,  expiredDateTime, notes, foodQuantity } = foods || {};
 
 
     // update request form
@@ -124,7 +124,7 @@ const UpdateFoods = () => {
                         <textarea
                             id="additionalNotes"
                             name="additionalNotes"
-                            defaultValue={additionalNotes || 'No Notes Here'}
+                            defaultValue={notes}
                             className="mt-1 block w-full p-2 border rounded-md"
                         ></textarea>
                     </div>

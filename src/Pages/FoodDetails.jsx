@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../hook/useAuth";
 import { format } from "date-fns";
 import toast, { Toaster } from "react-hot-toast";
@@ -11,6 +11,7 @@ const FoodDetails = () => {
     const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [notes, setNotes] = useState('');
+    const navigate = useNavigate();
 
     // console.log(foods)
     useEffect(() => {
@@ -47,6 +48,7 @@ const FoodDetails = () => {
             const res = await axios.patch(`${import.meta.env.VITE_API_URL}/foods/${paramsId.id}`, updateData)
             if (res.data.modifiedCount) {
                 toast.success('Data Updated SuccessFull')
+                navigate('/manageFood')
             }
         } catch (error) {
             console.error(error);
