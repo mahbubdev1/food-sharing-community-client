@@ -3,6 +3,7 @@ import useAuth from "../hook/useAuth";
 import axios from "axios";
 import { format } from "date-fns";
 import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const ManageMyFood = () => {
     const { user } = useAuth();
@@ -26,15 +27,15 @@ const ManageMyFood = () => {
 
     // Foods Update Functionality
 
-    const handleUpdate = async(id) => {
-        try{
-            const {data} = await axios.patch(`${import.meta.env.VITE_API_URL}/request/${id}`)
-            console.log(data)
-        }
-        catch(error) {
-            toast.error(error.message)
-        }
-    }
+    // const handleUpdate = async (id) => {
+    //     try {
+    //         const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/request/${id}`)
+    //         console.log(data)
+    //     }
+    //     catch (error) {
+    //         toast.error(error.message)
+    //     }
+    // }
 
 
     // Delete Functionality
@@ -43,7 +44,7 @@ const ManageMyFood = () => {
             const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/request/${id}`)
             console.log(data)
             loadedUserFoods()
-            if(data.deletedCount){
+            if (data.deletedCount) {
                 toast.success('Foods Deleted Success !!!!')
             }
         }
@@ -108,12 +109,11 @@ const ManageMyFood = () => {
                                         </span>
                                     </td>
                                     <td className="px-4 py-2 flex space-x-2">
-                                        <button
+                                        <Link to={`/updateFood/${food._id}`}><button
                                             className="px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                                            onClick={() => handleUpdate(food._id)}
                                         >
                                             Update
-                                        </button>
+                                        </button></Link>
                                         <button
                                             className="px-3 py-2 text-white bg-red-500 rounded hover:bg-red-600"
                                             onClick={() => deleteWithToast(food._id)}
