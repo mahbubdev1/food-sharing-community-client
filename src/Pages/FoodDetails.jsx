@@ -19,13 +19,14 @@ const FoodDetails = () => {
     const loadedAllFood = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/foods/${paramsId.id}`)
         setFoods(data)
+        setNotes(data.additionalNotes)
     }
 
     const todayDate = format(new Date(), 'yyyy-MM-dd');
 
     const { foodName, foodImage, _id: foodID, donatorEmail, donatorName, pickupLocation, foodStatus, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
 
-
+   
 
     // console.log(requestFoodInfo)
     const handleRequest = async (e) => {
@@ -139,7 +140,7 @@ const FoodDetails = () => {
                                         </div>
                                         <div>
                                             <label className="block mb-1 ml-1">Additional Notes</label>
-                                            <textarea type="text" name="notes" onChange={(e) => setNotes(e.target.value)} defaultValue={additionalNotes} className="block w-full p-2 border-2 text-black rounded autoexpand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
+                                            <textarea type="text" name="notes" onChange={(e) => setNotes(e.target.value)} value={notes} className="block w-full p-2 border-2 text-black rounded autoexpand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
                                         </div>
                                     </form>
                                 </div>

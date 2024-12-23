@@ -25,19 +25,6 @@ const ManageMyFood = () => {
         setFoods(data)
     }
 
-    // Foods Update Functionality
-
-    // const handleUpdate = async (id) => {
-    //     try {
-    //         const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/request/${id}`)
-    //         console.log(data)
-    //     }
-    //     catch (error) {
-    //         toast.error(error.message)
-    //     }
-    // }
-
-
     // Delete Functionality
     const handleDelete = async (id) => {
         try {
