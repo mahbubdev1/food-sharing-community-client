@@ -8,6 +8,8 @@ const FoodDetails = () => {
     const paramsId = useParams();
     const [foods, setFoods] = useState({});
     const { user } = useAuth();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     console.log(foods)
     useEffect(() => {
@@ -19,68 +21,116 @@ const FoodDetails = () => {
     }
 
     const todayDate = format(new Date(), 'yyyy-MM-dd');
-    
-    const { foodName, foodImage, _id, donatorEmail, donatorName, userEmail = user.email, pickupLocation, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
-    
-    // const expireDate = format(new Date(expiredDateTime), 'P')
+
+    const { foodName, foodImage, _id, donatorEmail, donatorName,  pickupLocation, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
+
+
+    const handleRequest = async () => {
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/request`, {});
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
-        <section className="p-6 bg-gray-800 dark:bg-gray-100 text-gray-50 dark:text-gray-900 my-20">
-            <form noValidate="" action="" className="container flex flex-col mx-auto">
-                <h2 className="text-3xl font-bold text-center py-3">Requested Form</h2>
-                <fieldset className="grid grid-cols-3 gap-6 p-6 rounded-md shadow-sm bg-gray-900 dark:bg-gray-50">
-                    <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-                        <div className="col-span-full space-y-2 sm:col-span-3">
-                            <label htmlFor="foodName" className="font-bold pb-2">Food Name</label>
-                            <input id="foodName" type="text" value={foodName} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 p-3 focus:ring-gray-400 font-thin focus:dark:ring-gray-600 border-gray-900" />
+        <div className="max-w-2xl mx-auto my-14">
+            <div className="mx-auto overflow-hidden bg-gray-900 dark:bg-gray-50 rounded-lg shadow-lg text-gray-100 dark:text-gray-800">
+                <img
+                    src={foodImage}
+                    alt={foodName}
+                    className="object-cover object-center w-full h-56 lg:h-72"
+                />
+                <div className="p-6">
+                    <h2 className="text-2xl font-bold text-violet-400 dark:text-violet-600">
+                        {foodName || "Food Name Not Available"}
+                    </h2>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Pickup Location:</strong> {pickupLocation || "Not Provided"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Food Quantity:</strong> {foodQuantity || "Not Available"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Expire Date:</strong> {expiredDateTime ? format(new Date(expiredDateTime), "P") : "Not Available"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>User Email:</strong> {user?.email}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Donator Name:</strong> {donatorName || "Anonymous"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Toady Date:</strong> {todayDate || "Today Date"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Donator Email:</strong> {donatorEmail || "Not Available"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Food Id:</strong> {_id || "Not Available"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
+                        <strong>Notes:</strong> {additionalNotes || "No additional notes provided"}
+                    </p>
+                    <button onClick={() => setIsModalOpen(true)} className="w-full mt-3 px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700">Request</button>
+
+                    {isModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center pt-[120px] px-3">
+                            <div
+                                onClick={(e) => e.stopPropagation()}
+                                className="bg-white p-6 rounded-lg max-w-xl w-full h-[600px] overflow-y-scroll">
+                                <h2 className="text-lg font-bold mb-4">Request Food Form</h2>
+                                <div className="space-y-4">
+                                    <form noValidate="" className="container w-full max-w-xl mx-auto space-y-3 rounded-md shadow dark:bg-gray-50">
+                                        <div>
+                                            <label className="block mb-1 ml-1">Food Name</label>
+                                            <input type="text" readOnly name="foodName" value={foodName}  className="block w-full border-2 text-black p-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Food Id</label>
+                                            <input value={_id} name="foodId" readOnly className="block w-full p-2 border-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100 text-black" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Food Donator Email</label>
+                                            <input type="email" readOnly name="donatorEmail" value={donatorEmail} className="block w-full p-2 border-2 text-black rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Food Donator Name</label>
+                                            <input type="text" readOnly name="donatorName" value={donatorName} className="block w-full p-2 border-2 text-black rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">User Email</label>
+                                            <input type="text" readOnly name="userEmail" value={user?.email} className="block w-full p-2 border-2 text-black rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Current Date</label>
+                                            <input type="date" readOnly name="currentDate" value={todayDate} className="block w-full p-2 border-2 text-black rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Pickup Location</label>
+                                            <input type="text" readOnly name="location" value={pickupLocation} className="block w-full p-2 border-2 text-black rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Expire Date</label>
+                                            <input type="date" name="expireDate" readOnly defaultValue={expiredDateTime ? format(new Date(expiredDateTime), "yyyy-MM-dd") : ""} className="p-2 border-2 w-full text-black " id="" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Additional Notes</label>
+                                            <textarea type="text" name="notes" defaultValue={additionalNotes} className="block w-full p-2 border-2 text-black rounded autoexpand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className="mt-6 flex justify-end space-x-4">
+                                    <button onClick={() => setIsModalOpen(false)} className="px-4 py-2 bg-red-400 text-white rounded hover:bg-red-500">Cancel</button>
+                                    <button onClick={handleRequest} className="px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700">Request</button>
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="foodImage" className="font-bold pb-2">Food Image</label>
-                            <input id="foodImage" type="text" value={foodImage} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="foodId" className="font-bold pb-2">Food Id</label>
-                            <input id="foodId" type="text" value={_id} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="DonatorEmail" className="font-bold pb-2">Donator Email</label>
-                            <input id="DonatorEmail" type="text" value={donatorEmail} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="DonatorName" className="font-bold pb-2">Donator Name</label>
-                            <input id="DonatorName" type="text" value={donatorName} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="userEmail" className="font-bold pb-2">User Email</label>
-                            <input id="userEmail" type="text" value={userEmail} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="newDate" className="font-bold pb-2">New Date</label>
-                            <input id="newDate" type="date" value={todayDate} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="pickerLocation" className="font-bold pb-2">Picker Location</label>
-                            <input id="pickerLocation" type="text" value={pickupLocation} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="expireDate" className="font-bold pb-2">Expire Date</label>
-                            <input id="expireDate" type="date" value={expiredDateTime} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                        <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                            <label htmlFor="foodQuality" className="font-bold pb-2">Food Quality</label>
-                            <input id="foodQuality" type="text" value={foodQuantity} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                        </div>
-                    </div>
-                    <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                        <label htmlFor="additionalNotes" className="font-bold pb-2">Additional Notes</label>
-                        <input id="additionalNotes" type="text" defaultValue={additionalNotes} className="w-full rounded-md focus:ring focus:ring-opacity-50 text-gray-900 dark:text-gray-800 font-thin p-3 focus:ring-violet-400 focus:dark:ring-violet-600 border-gray-900" />
-                    </div>
-                    <div className="col-span-full space-y-2 sm:col-span-3 border-gray-700">
-                        <input type="submit" className="w-full px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700" value="Requested" />
-                    </div>
-                </fieldset>
-            </form>
-        </section>
+                    )
+                    }
+                </div>
+            </div>
+        </div>
     );
 };
 
