@@ -12,6 +12,7 @@ const Login = () => {
     const handleGoogleLoginBtn = () => {
         googleSingUp()
         .then(result => {
+            navigate(pathname);
             console.log(result.user)
         })
         .catch(error => {
@@ -26,8 +27,8 @@ const Login = () => {
         const password = form.password.value
         handleSignEmailPassword(email, password)
         .then(res => {
-            console.log(res);
             navigate(pathname);
+            console.log(res);
             toast.success('Successfully Logged In');
         })
         .catch(error => {

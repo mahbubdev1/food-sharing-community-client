@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAuth from "../hook/useAuth";
 import { format } from "date-fns";
+import toast, { Toaster } from "react-hot-toast";
 
 const FoodDetails = () => {
     const paramsId = useParams();
     const [foods, setFoods] = useState({});
     const { user } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [notes, setNotes] = useState('');
 
-
-    console.log(foods)
+    // console.log(foods)
     useEffect(() => {
         loadedAllFood()
     }, [])
@@ -22,12 +23,30 @@ const FoodDetails = () => {
 
     const todayDate = format(new Date(), 'yyyy-MM-dd');
 
-    const { foodName, foodImage, _id, donatorEmail, donatorName,  pickupLocation, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
+    const { foodName, foodImage, _id: foodID, donatorEmail, donatorName, pickupLocation, foodStatus, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
 
 
-    const handleRequest = async () => {
+
+    // console.log(requestFoodInfo)
+    const handleRequest = async (e) => {
+        e.preventDefault();
+        // const notes = e.target.notes.value;
+        const requestFoodInfo = { foodName, foodImage, foodID, donatorEmail, donatorName, pickupLocation, foodStatus, expiredDateTime, notes, foodQuantity, userEmail: user?.email, todayDate }
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/request`, {});
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/request`,  requestFoodInfo);
+            if (data.insertedId) {
+                toast.success('Request added successfully!');
+                // navigate('/availableFoods');
+            }
+
+            const updateData = {
+                additionalNotes: notes,
+                foodStatus: "requested",
+            };
+            const res = await axios.patch(`${import.meta.env.VITE_API_URL}/foods/${paramsId.id}`, updateData)
+            if (res.data.modifiedCount) {
+                toast.success('Data Updated SuccessFull')
+            }
         } catch (error) {
             console.error(error);
         }
@@ -67,7 +86,7 @@ const FoodDetails = () => {
                         <strong>Donator Email:</strong> {donatorEmail || "Not Available"}
                     </p>
                     <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Food Id:</strong> {_id || "Not Available"}
+                        <strong>Food Id:</strong> {foodID || "Not Available"}
                     </p>
                     <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
                         <strong>Notes:</strong> {additionalNotes || "No additional notes provided"}
@@ -84,11 +103,15 @@ const FoodDetails = () => {
                                     <form noValidate="" className="container w-full max-w-xl mx-auto space-y-3 rounded-md shadow dark:bg-gray-50">
                                         <div>
                                             <label className="block mb-1 ml-1">Food Name</label>
-                                            <input type="text" readOnly name="foodName" value={foodName}  className="block w-full border-2 text-black p-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                            <input type="text" readOnly name="foodName" value={foodName} className="block w-full border-2 text-black p-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
+                                        </div>
+                                        <div>
+                                            <label className="block mb-1 ml-1">Food Image</label>
+                                            <input type="text" readOnly name="foodName" value={foodImage} className="block w-full border-2 text-black p-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100" />
                                         </div>
                                         <div>
                                             <label className="block mb-1 ml-1">Food Id</label>
-                                            <input value={_id} name="foodId" readOnly className="block w-full p-2 border-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100 text-black" />
+                                            <input value={foodID} name="foodId" readOnly className="block w-full p-2 border-2 rounded focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100 text-black" />
                                         </div>
                                         <div>
                                             <label className="block mb-1 ml-1">Food Donator Email</label>
@@ -116,12 +139,13 @@ const FoodDetails = () => {
                                         </div>
                                         <div>
                                             <label className="block mb-1 ml-1">Additional Notes</label>
-                                            <textarea type="text" name="notes" defaultValue={additionalNotes} className="block w-full p-2 border-2 text-black rounded autoexpand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
+                                            <textarea type="text" name="notes" onChange={(e) => setNotes(e.target.value)} defaultValue={additionalNotes} className="block w-full p-2 border-2 text-black rounded autoexpand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
                                         </div>
                                     </form>
                                 </div>
                                 <div className="mt-6 flex justify-end space-x-4">
                                     <button onClick={() => setIsModalOpen(false)} className="px-4 py-2 bg-red-400 text-white rounded hover:bg-red-500">Cancel</button>
+                                    <Toaster></Toaster>
                                     <button onClick={handleRequest} className="px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700">Request</button>
                                 </div>
                             </div>
