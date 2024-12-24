@@ -21,7 +21,7 @@ const ManageMyFood = () => {
             params: {
                 email: user?.email
             }
-        })
+        }, )
         setFoods(data)
     }
 

@@ -11,7 +11,7 @@ const MyFoodRequest = () => {
     useEffect(() => {
         const fetchUserRequests = async () => {
             try {
-                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/request?email=${user?.email}`);
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/request?email=${user?.email}`, {withCredentials: true});
                 setRequests(data);
             } catch (error) {
                 console.error("Error fetching requests:", error);

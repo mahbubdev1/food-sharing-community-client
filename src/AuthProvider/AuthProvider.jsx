@@ -1,6 +1,7 @@
 import { signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../Firebase/Firebase.Config";
+import axios from "axios";
 
 export const AuthContext = createContext();
 const googleProvider = new GoogleAuthProvider();
@@ -9,11 +10,11 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const handleEmailPassRegister = (email,password) => {
-        return createUserWithEmailAndPassword(auth, email,password)
+    const handleEmailPassRegister = (email, password) => {
+        return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    const handleSignEmailPassword = (email,password) => {
+    const handleSignEmailPassword = (email, password) => {
         return signInWithEmailAndPassword(auth, email, password)
     }
 
@@ -24,13 +25,6 @@ const AuthProvider = ({ children }) => {
     const handleSignOut = () => {
         return signOut(auth)
     }
-
-    // const handleManageUser = (name, photo) => {
-    //     return updateProfile(auth.currentUser, {
-    //         displayName: name,
-    //         photoURL: photo
-    //     })
-    // }
 
     const handleManageUser = (name, photo) => {
         if (auth.currentUser) {
@@ -49,11 +43,15 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             console.log(currentUser)
-            if(currentUser) {
+            if (currentUser?.email) {
                 setUser(currentUser)
+                const { data } = axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: currentUser?.email }, { withCredentials: true })
+                console.log(data)
             }
-            else{
-                setUser(null)
+            else {
+                const { data } = axios.get(`${import.meta.env.VITE_API_URL}/logout`, { withCredentials: true })
+                console.log(data)
+                setUser(currentUser)
             }
             setLoading(false)
         })
