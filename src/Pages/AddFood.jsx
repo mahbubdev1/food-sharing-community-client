@@ -30,6 +30,7 @@ const AddFood = () => {
         e.preventDefault();
         const foodData = {
             ...formData,
+            foodQuantity: Number(formData.foodQuantity),
             foodStatus,
             donatorImage: (user?.photoURL),
             donatorName: (user?.displayName),
@@ -37,11 +38,12 @@ const AddFood = () => {
         };
 
         console.log(foodData)
+        const sort = 'dsc';
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/foods`, foodData);
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/foods?sort=${sort}`, foodData);
             if (data.insertedId) {
-                toast.success('Food added successfully!');
                 navigate('/availableFoods');
+                toast.success('Food added successfully!!!');
             }
         } catch (error) {
             toast.error(error.message); 

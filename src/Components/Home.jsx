@@ -1,11 +1,15 @@
-import { Outlet } from "react-router-dom";
 import Banner from "./Banner";
+import ExploreSharing from "./ExploreSharing";
+import FeaturedFoods from "./FeaturedFoods";
+import OurRecipes from "./OurRecipes";
 
 const Home = () => {
     return (
         <div>
             <Banner></Banner>
-            <Outlet></Outlet>
+            <FeaturedFoods></FeaturedFoods>
+            <ExploreSharing></ExploreSharing>
+            <OurRecipes></OurRecipes>
         </div>
     );
 };
