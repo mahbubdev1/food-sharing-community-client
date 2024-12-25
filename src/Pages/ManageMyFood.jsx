@@ -27,7 +27,7 @@ const ManageMyFood = () => {
     // Delete Functionality
     const handleDelete = async (id) => {
         try {
-            const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/request/${id}`)
+            const { data } = await axiosSecure.delete(`${import.meta.env.VITE_API_URL}/request/${id}`)
             console.log(data)
             loadedUserFoods()
             if (data.deletedCount) {

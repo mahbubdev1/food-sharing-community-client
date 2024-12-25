@@ -1,20 +1,28 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import FoodCard from "../Pages/FoodCard";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "./Loader/Loader";
 
 const FeaturedFoods = () => {
-    const [featured, setFeatured] = useState([]);
-    useEffect(() => {
-        const loadedAllFood = async () => {
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/food`)
-            // const availableFoods = data.filter((food) => food.foodStatus === "available")
-            setFeatured(data)
-        }
-        loadedAllFood()
-    }, [])
+    // const [featured, setFeatured] = useState([]);
+    // useEffect(() => {
+    //     const loadedAllFood = async () => {
+    //         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/food`)
+    //         // const availableFoods = data.filter((food) => food.foodStatus === "available")
+    //         setFeatured(data)
+    //     }
+    //     loadedAllFood()
+    // }, [])
 
-    console.log(featured)
+    const {data:featured, isLoading} = useQuery({ queryKey: ['foods'], queryFn: async() => {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/food`)
+        return data
+    } })
+
+    if(isLoading)  return <Loader></Loader>
+
     return (
         <div className="container mx-auto mt-12">
             <div className="text-center">

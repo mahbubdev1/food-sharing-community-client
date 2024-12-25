@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import useAuth from '../hook/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../hook/useAxiosSecure';
 
