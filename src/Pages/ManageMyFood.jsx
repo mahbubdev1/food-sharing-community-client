@@ -4,10 +4,13 @@ import axios from "axios";
 import { format } from "date-fns";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../hook/useAxiosSecure";
 
 const ManageMyFood = () => {
     const { user } = useAuth();
-    const [foods, setFoods] = useState([])
+    const [foods, setFoods] = useState([]);
+    const axiosSecure = useAxiosSecure();
+    console.log(user)
 
 
     useEffect(() => {
@@ -17,11 +20,7 @@ const ManageMyFood = () => {
 
     // get all request data
     const loadedUserFoods = async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/request`, {
-            params: {
-                email: user?.email
-            }
-        }, )
+        const { data } = await axiosSecure.get(`/request?email=${user?.email}`)
         setFoods(data)
     }
 

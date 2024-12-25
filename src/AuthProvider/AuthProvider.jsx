@@ -15,10 +15,12 @@ const AuthProvider = ({ children }) => {
     }
 
     const handleSignEmailPassword = (email, password) => {
+        setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
 
     const googleSingUp = () => {
+        setLoading(true)
         return signInWithPopup(auth, googleProvider)
     }
 
@@ -51,7 +53,7 @@ const AuthProvider = ({ children }) => {
             else {
                 const { data } = axios.get(`${import.meta.env.VITE_API_URL}/logout`, { withCredentials: true })
                 console.log(data)
-                setUser(currentUser)
+                setUser(null)
             }
             setLoading(false)
         })

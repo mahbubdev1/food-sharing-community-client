@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import useAuth from "../hook/useAuth";
-import axios from "axios";
 import { format } from "date-fns";
+import useAxiosSecure from "../hook/useAxiosSecure";
 
 const MyFoodRequest = () => {
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
 
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
         const fetchUserRequests = async () => {
             try {
-                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/request?email=${user?.email}`, {withCredentials: true});
+                const { data } = await axiosSecure.get(`/request?email=${user?.email}`);
                 setRequests(data);
             } catch (error) {
                 console.error("Error fetching requests:", error);

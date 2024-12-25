@@ -3,9 +3,11 @@ import useAuth from '../hook/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useAxiosSecure from '../hook/useAxiosSecure';
 
 const AddFood = () => {
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure();
 
     const [formData, setFormData] = useState({
         foodName: '',
@@ -40,7 +42,7 @@ const AddFood = () => {
         console.log(foodData)
         const sort = 'dsc';
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/foods?sort=${sort}`, foodData);
+            const { data } = await axiosSecure.post(`/foods?sort=${sort}`, foodData);
             if (data.insertedId) {
                 navigate('/availableFoods');
                 toast.success('Food added successfully!!!');
