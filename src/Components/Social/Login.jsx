@@ -13,6 +13,7 @@ const Login = () => {
         googleSingUp()
         .then(result => {
             navigate(pathname);
+            toast.success('Successfully Logged In');
             console.log(result.user)
         })
         .catch(error => {
