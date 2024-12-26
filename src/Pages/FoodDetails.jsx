@@ -48,7 +48,7 @@ const FoodDetails = () => {
             const res = await axios.patch(`${import.meta.env.VITE_API_URL}/foods/${paramsId.id}`, updateData)
             if (res.data.modifiedCount) {
                 toast.success('Data Updated SuccessFull')
-                navigate('/manageFood')
+                navigate('/myFoodRequest')
             }
         } catch (error) {
             console.error(error);
