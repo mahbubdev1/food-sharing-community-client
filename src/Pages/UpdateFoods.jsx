@@ -18,7 +18,7 @@ const UpdateFoods = () => {
         loadedAllFood()
     }, [paramsId?.id])
 
-    const { foodName, foodImage, pickupLocation,  expiredDateTime, notes, foodQuantity } = foods || {};
+    const { foodName, foodImage,foodID, pickupLocation,  expiredDateTime,todayDate, notes, foodQuantity } = foods || {};
 
 
     // update request form
@@ -30,9 +30,11 @@ const UpdateFoods = () => {
         const foodQuantity = form.foodQuantity.value;
         const pickupLocation = form.pickupLocation.value;
         const expiredDateTime = form.expiredDateTime.value;
-        const additionalNotes = form.additionalNotes.value;
+        const notes = form.notes.value;
+        const todayDate = form.todayDate.value;
+        const foodID = form.foodID.value;
 
-        const updateData = { foodName, foodImage, foodQuantity, pickupLocation, expiredDateTime, additionalNotes }
+        const updateData = { foodName, foodImage, foodQuantity, pickupLocation, expiredDateTime,todayDate,foodID, notes }
 
         try {
             const res = await axios.put(`${import.meta.env.VITE_API_URL}/request/${paramsId.id}`, updateData)
@@ -58,6 +60,20 @@ const UpdateFoods = () => {
                             id="foodName"
                             name="foodName"
                             defaultValue={foodName}
+                            className="mt-1 block w-full p-2 border rounded-md"
+                            required
+                        />
+                    </div>
+
+                    {/* Food ID */}
+                    <div className="mb-4">
+                        <label htmlFor="foodID" className="block text-sm font-medium text-gray-700">Food Id</label>
+                        <input
+                            readOnly
+                            type="text"
+                            id="foodID"
+                            name="foodID"
+                            defaultValue={foodID}
                             className="mt-1 block w-full p-2 border rounded-md"
                             required
                         />
@@ -109,7 +125,6 @@ const UpdateFoods = () => {
                             expiredDateTime && <input
                             type="date"
                             id="expiredDateTime"
-                            // defaultValue={format(new Date(expiredDateTime), "P")}
                             defaultValue={format(new Date(expiredDateTime), "yyyy-MM-dd")}
                             name="expiredDateTime"
                             className="mt-1 block w-full p-2 border rounded-md"
@@ -118,12 +133,27 @@ const UpdateFoods = () => {
                         }
                     </div>
 
+                    {/* Today Date/Time Form*/}
+                    <div className="mb-4">
+                        <label htmlFor="expiredDateTime" className="block text-sm font-medium text-gray-700">Expired Date/Time</label>
+                        {
+                            todayDate && <input
+                            type="date"
+                            id="todayDate"
+                            defaultValue={format(new Date(todayDate), "yyyy-MM-dd")}
+                            name="todayDate"
+                            className="mt-1 block w-full p-2 border rounded-md"
+                            required
+                        />
+                        }
+                    </div>
+
                     {/* Additional Notes Form*/}
                     <div className="mb-4">
-                        <label htmlFor="additionalNotes" className="block text-sm font-medium text-gray-700">Additional Notes</label>
+                        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Additional Notes</label>
                         <textarea
-                            id="additionalNotes"
-                            name="additionalNotes"
+                            id="notes"
+                            name="notes"
                             defaultValue={notes}
                             className="mt-1 block w-full p-2 border rounded-md"
                         ></textarea>

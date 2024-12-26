@@ -3,6 +3,7 @@ import useAuth from '../hook/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../hook/useAxiosSecure';
+import { useMutation } from '@tanstack/react-query';
 
 const AddFood = () => {
     const navigate = useNavigate();
@@ -27,6 +28,13 @@ const AddFood = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const {isPending, mutateAsync} = useMutation({
+        mutationFn: async foodFormData => {
+            const reponse  = await axiosSecure.post(`/foods`, foodFormData);
+            return reponse
+        } 
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const foodData = {
@@ -38,11 +46,11 @@ const AddFood = () => {
             donatorEmail: (user?.email),
         };
 
-        console.log(foodData)
-        const sort = 'dsc';
+
         try {
-            const { data } = await axiosSecure.post(`/foods?sort=${sort}`, foodData);
-            if (data.insertedId) {
+            
+            const response = await mutateAsync(foodData)
+            if (response?.data?.insertedId) {
                 navigate('/availableFoods');
                 toast.success('Food added successfully!!!');
             }
@@ -148,7 +156,7 @@ const AddFood = () => {
                     </div>
 
                     {/* Add Button */}
-                    <input type="submit" className="bg-violet-500 text-white py-2 w-full rounded-xl" value="Add Food" />
+                    <input type="submit" className="bg-violet-500 text-white py-2 w-full rounded-xl" value={`${isPending ? 'Add Food.....' : 'Add Food'}`} />
                     <Toaster></Toaster>
                 </form>
             </div>

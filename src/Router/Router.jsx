@@ -36,14 +36,14 @@ const router = createBrowserRouter([
             },
             {
                 path: '/foodDetails/:id',
-                element:<FoodDetails></FoodDetails>
+                element: <PrivateRoute><FoodDetails></FoodDetails></PrivateRoute>
             },
             {
                 path: '/updateFood/:id',
                 element: <PrivateRoute><UpdateFoods></UpdateFoods></PrivateRoute>
             },
             {
-                path:'/myFoodRequest',
+                path: '/myFoodRequest',
                 element: <MyFoodRequest></MyFoodRequest>
             },
             {
