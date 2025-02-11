@@ -15,19 +15,20 @@ const FoodDetails = () => {
 
     // console.log(foods)
     useEffect(() => {
+        const loadedAllFood = async () => {
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/foods/${paramsId.id}`)
+            setFoods(data)
+            setNotes(data.additionalNote000s)
+        }
         loadedAllFood()
-    }, [])
-    const loadedAllFood = async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/foods/${paramsId.id}`)
-        setFoods(data)
-        setNotes(data.additionalNotes)
-    }
+    }, [paramsId.id])
+
 
     const todayDate = format(new Date(), 'yyyy-MM-dd');
 
     const { foodName, foodImage, _id: foodID, donatorEmail, donatorName, pickupLocation, foodStatus, expiredDateTime, additionalNotes, foodQuantity } = foods || {};
 
-   
+    
 
     // console.log(requestFoodInfo)
     const handleRequest = async (e) => {
@@ -35,7 +36,7 @@ const FoodDetails = () => {
         // const notes = e.target.notes.value;
         const requestFoodInfo = { foodName, foodImage, foodID, donatorEmail, donatorName, pickupLocation, foodStatus, expiredDateTime, notes, foodQuantity, userEmail: user?.email, todayDate }
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/request`,  requestFoodInfo);
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/request`, requestFoodInfo);
             if (data.insertedId) {
                 toast.success('Request added successfully!');
                 // navigate('/availableFoods');
@@ -57,43 +58,63 @@ const FoodDetails = () => {
 
     return (
         <div className="max-w-2xl mx-auto my-14">
-            <div className="mx-auto overflow-hidden bg-gray-900 dark:bg-gray-50 rounded-lg shadow-lg text-gray-100 dark:text-gray-800">
+            <div className="mx-auto overflow-hidden bg-gray-100 rounded-lg shadow-lg text-gray-100">
                 <img
                     src={foodImage}
                     alt={foodName}
-                    className="object-cover object-center w-full h-56 lg:h-72"
+                    className="object-cover object-center w-full h-56 lg:h-80"
                 />
                 <div className="p-6">
-                    <h2 className="text-2xl font-bold text-violet-400 dark:text-violet-600">
-                        {foodName || "Food Name Not Available"}
-                    </h2>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Pickup Location:</strong> {pickupLocation || "Not Provided"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Food Quantity:</strong> {foodQuantity || "Not Available"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Expire Date:</strong> {expiredDateTime ? format(new Date(expiredDateTime), "P") : "Not Available"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>User Email:</strong> {user?.email}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Donator Name:</strong> {donatorName || "Anonymous"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Toady Date:</strong> {todayDate || "Today Date"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Donator Email:</strong> {donatorEmail || "Not Available"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Food Id:</strong> {foodID || "Not Available"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-600">
-                        <strong>Notes:</strong> {additionalNotes || "No additional notes provided"}
-                    </p>
+                    <div>
+                        <h2 className="text-2xl font-bold text-violet-400 dark:text-violet-600">
+                            {foodName || "Food Name Not Available"}
+                        </h2>
+                        <h3></h3>
+                    </div>
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Pickup Location</strong>
+                        <span className="sm:w-3/4">: {pickupLocation || "Not Provided"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Food Quantity</strong>
+                        <span className="sm:w-3/4">: {foodQuantity || "Not Available"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Expire Date</strong>
+                        <span className="sm:w-3/4">: {expiredDateTime ? format(new Date(expiredDateTime), "P") : "Not Available"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">User Email</strong>
+                        <span className="sm:w-3/4">: {user?.email}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Donator Name</strong>
+                        <span className="sm:w-3/4">: {donatorName || "Anonymous"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Today Date</strong>
+                        <span className="sm:w-3/4">: {todayDate || "Today Date"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Donator Email</strong>
+                        <span className="sm:w-3/4">: {donatorEmail || "Not Available"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Food ID</strong>
+                        <span className="sm:w-3/4">: {foodID || "Not Available"}</span>
+                    </div>
+
+                    <div className="mt-3 flex text-base text-gray-600">
+                        <strong className="sm:w-1/4">Notes</strong>
+                        <span className="sm:w-3/4">: {additionalNotes || "No additional notes provided"}</span>
+                    </div>
                     <button onClick={() => setIsModalOpen(true)} className="w-full mt-3 px-4 py-3 font-semibold text-white bg-violet-500 rounded-md hover:bg-violet-600 dark:hover:bg-violet-700">Request</button>
 
                     {isModalOpen && (
@@ -142,7 +163,7 @@ const FoodDetails = () => {
                                         </div>
                                         <div>
                                             <label className="block mb-1 ml-1">Additional Notes</label>
-                                            <textarea type="text" name="notes" onChange={(e) => setNotes(e.target.value)} value={notes} className="block w-full p-2 border-2 text-black rounded autoexpand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
+                                            <textarea type="text" name="notes" onChange={(e) => setNotes(e.target.value)} value={notes} className="block w-full p-2 border-2 text-black rounded auto expand focus:outline-none focus:ring focus:ring-opacity-25 focus:dark:ring-rose-600 dark:bg-gray-100"></textarea>
                                         </div>
                                     </form>
                                 </div>

@@ -1,4 +1,5 @@
 import Banner from "./Banner";
+import Contact from "./Contact";
 import ExploreSharing from "./ExploreSharing";
 import FeaturedFoods from "./FeaturedFoods";
 import OurRecipes from "./OurRecipes";
@@ -10,6 +11,7 @@ const Home = () => {
             <FeaturedFoods></FeaturedFoods>
             <ExploreSharing></ExploreSharing>
             <OurRecipes></OurRecipes>
+            <Contact></Contact>
         </div>
     );
 };

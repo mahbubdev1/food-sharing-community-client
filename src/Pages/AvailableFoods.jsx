@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FoodCard from "./FoodCard";
 import { FaTh, FaThLarge } from "react-icons/fa";
+import NoDataFound from "../Components/ErrorPage/NoDataFound";
 
 const AvailableFoods = () => {
     const [allFoods, setAllFoods] = useState([]);
@@ -24,7 +25,7 @@ const AvailableFoods = () => {
         setAllFoods(availableFoods)
     }
 
-    console.log(allFoods)
+    // console.log(allFoods)
     return (
         <div className="container mx-auto my-8 sm:my-16">
             <div className="flex max-sm:flex-col space-y-2 items-center justify-center sm:justify-between space-x-8 mb-3">
@@ -61,7 +62,7 @@ const AvailableFoods = () => {
             </div>
             <div className={`grid gap-14 max-sm:p-2 ${isThreeColumn ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3': 'grid-cols-1 md:grid-cols-2'}`}>
                 {
-                    allFoods.map((food) => <FoodCard key={food._id} food={food}></FoodCard>)
+                    allFoods.length > 0 ? allFoods.map((food) => <FoodCard key={food._id} food={food}></FoodCard>) : <NoDataFound></NoDataFound>
                 }
             </div>
         </div>
