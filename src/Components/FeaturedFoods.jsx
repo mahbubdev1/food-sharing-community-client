@@ -18,7 +18,7 @@ const FeaturedFoods = () => {
         <div className="container mx-auto mt-20">
             <div className="text-center">
                 <h2 className="text-2xl sm:text-4xl font-bold"><span  className="text-violet-600">Featured</span> Food</h2>
-                <div className="mx-auto mt-2 w-72 sm:w-80 border-b-4 border-red-600"></div>
+                <div className="mx-auto mt-2 w-72 sm:w-80 border-b-4 border-violet-600"></div>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-14 mt-8 mb-10 max-sm:p-2">

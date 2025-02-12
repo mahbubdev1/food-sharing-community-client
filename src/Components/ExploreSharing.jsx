@@ -5,7 +5,10 @@ import explore3 from '../assets/explore3.jpg'
 const ExploreSharing = () => {
     return (
         <div className="container mx-auto max-sm:p-2 mb-10 mt-20">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-center"><span className="text-violet-600">Explore</span> the Heart of Food <span  >Sharing</span></h2>
+            <div>
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-center"><span className="text-violet-600">Explore</span> the Heart of Food <span  >Sharing</span></h2>
+                <div className='border-2 border-violet-600 w-[350px] sm:w-[600px] lg:w-[800px] mx-auto mt-3 text-right'></div>
+            </div>
             <div className='flex gap-5 md:gap-16 items-center mt-16 max-md:flex-col'>
                 <div className='flex-1'>
                     <h2 className="text-2xl sm:text-4xl font-semibold">Community Heroes</h2>
