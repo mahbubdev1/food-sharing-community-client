@@ -57,13 +57,13 @@ const Footer = () => {
                     <div className="space-y-3">
                         <div className="uppercase text-gray-900 font-bold">Social media</div>
                         <div className="flex justify-start items-center space-x-3">
-                            <Link rel="noopener noreferrer" title="Facebook" className="flex items-center p-1">
+                            <Link rel="noopener noreferrer" title="Facebook" className="flex items-center p-1 hover:text-violet-600">
                                <FaInstagram size={25}></FaInstagram>
                             </Link>
-                            <Link rel="noopener noreferrer" title="Twitter" className="flex items-center p-1">
+                            <Link rel="noopener noreferrer" title="Twitter" className="flex items-center p-1 hover:text-violet-600">
                                 <FaFacebook size={25}></FaFacebook>
                             </Link>
-                            <Link rel="noopener noreferrer" title="Instagram" className="w-10">
+                            <Link rel="noopener noreferrer" title="Instagram" className="w-10 hover:text-violet-600">
                                 <FaSquareXTwitter size={25} />
                             </Link>
                         </div>
