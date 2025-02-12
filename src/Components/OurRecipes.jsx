@@ -7,7 +7,7 @@ const OurRecipes = () => {
     return (
         <div className="container mx-auto mt-24">
             <div className="text-center mx-auto p-1">
-                <h3 className="uppercase">tasty and crunchy</h3>
+                <h3 className="uppercase dark:text-red-500">tasty and crunchy</h3>
                 <h2 className="uppercase text-4xl font-bold pt-2">Special Recipes</h2>
                 <div className='border-2 border-violet-600 w-[250px] sm:w-[350px] mx-auto mt-3 text-right'></div>
                 <p className="md:w-3/6 md:mx-auto pt-5 font-thin">In this section, we celebrate the diversity and creativity of food shared through our platform. "Our Special Recipes" showcases unique, delicious meals prepared using surplus ingredients. These recipes not only help reduce food waste but also bring communities together to explore new culinary experiences. </p>
