@@ -4,12 +4,13 @@ import contactAnimate from '../assets/Lottie/lottie.json';
 const Contact = () => {
     return (
         <div className="container mx-auto">
-            {/* <div className="text-center">
-                <h2 className="text-4xl font-bold text-gray-800">Contact Me</h2>
-                <p className="text-gray-600 lg:w-2/6 mx-auto pt-3">
-                    Feel free to reach out to me anytime. I am always here to assist you with your queries or collaborations.
+            <div className="text-center mt-10 sm:mb-4">
+                <h2 className="text-4xl font-bold text-gray-800">Call Center</h2>
+                <p className="text-gray-600 lg:w-2/6 mx-auto pt-2">
+                    Quick solution of your problems
                 </p>
-            </div> */}
+                <div className='border-2 border-violet-600 w-[250px] sm:w-[350px] mx-auto mt-3 text-right'></div>
+            </div>
             <div className="flex flex-col md:flex-row items-center justify-center gap-10 p-0">
                 <div className="w-full md:w-1/2">
                     <Lottie animationData={contactAnimate} loop={true} />
